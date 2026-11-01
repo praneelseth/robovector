@@ -1,0 +1,3 @@
+[
+  "{\"assistant_text\":\"I propose moving the block into the bowl.\",\"calls\":[{\"name\":\"pick\",\"arguments\":{\"object_id\":\"block_1\"}},{\"name\":\"place\",\"arguments\":{\"object_id\":\"block_1\",\"target_id\":\"bowl_1\",\"relation\":\"inside\"}},{\"name\":\"finish\",\"arguments\":{}}]}"
+]
