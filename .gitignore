@@ -1,8 +1,12 @@
+outputs/
+tmp/
 .venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 *.egg-info/
+data/chat_refusal/downloads/
+
 build/
 dist/
 model-cache/

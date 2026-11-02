@@ -1,0 +1,54 @@
+{
+  "harmful_test": {
+    "url": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/dataset/splits/harmful_test.json",
+    "revision": "9d852fae1a9121c78b29142de733cb1340770cc3",
+    "sha256": "5e12ae102c3791dee083a69ab6269a78e033411c629bc3f66f75d2fde196d9ef",
+    "count": 572,
+    "licenses": {
+      "refusal_direction_APACHE-2.0.txt": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/LICENSE",
+      "HarmBench_MIT.txt": "https://raw.githubusercontent.com/centerforaisafety/HarmBench/main/LICENSE",
+      "JailbreakBench_MIT.txt": "https://raw.githubusercontent.com/JailbreakBench/jailbreakbench/main/LICENSE",
+      "StrongREJECT_MIT.txt": "https://raw.githubusercontent.com/alexandrasouly/strongreject/main/LICENSE"
+    }
+  },
+  "harmful_val": {
+    "url": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/dataset/splits/harmful_val.json",
+    "revision": "9d852fae1a9121c78b29142de733cb1340770cc3",
+    "sha256": "305f1d1e6dfa6c50a32d24a18ef815f42b5441eb83e6d7767d242107162fd9f4",
+    "count": 39,
+    "licenses": {
+      "refusal_direction_APACHE-2.0.txt": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/LICENSE",
+      "HarmBench_MIT.txt": "https://raw.githubusercontent.com/centerforaisafety/HarmBench/main/LICENSE"
+    }
+  },
+  "harmless_test": {
+    "url": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/dataset/splits/harmless_test.json",
+    "revision": "9d852fae1a9121c78b29142de733cb1340770cc3",
+    "sha256": "1b5930ce5e855ada758b3116ce7c4aaea9b9d05f8cdd77b385511d4c84173b19",
+    "count": 6266,
+    "licenses": {
+      "refusal_direction_APACHE-2.0.txt": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/LICENSE",
+      "Alpaca_CC-BY-NC-4.0.txt": "https://raw.githubusercontent.com/tatsu-lab/stanford_alpaca/main/DATA_LICENSE"
+    }
+  },
+  "harmless_train": {
+    "url": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/dataset/splits/harmless_train.json",
+    "revision": "9d852fae1a9121c78b29142de733cb1340770cc3",
+    "sha256": "86623b1f8a25aa35df153fc97a556dbcebb6a7c881538ae43ee479ca17f2e002",
+    "count": 18793,
+    "licenses": {
+      "refusal_direction_APACHE-2.0.txt": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/LICENSE",
+      "Alpaca_CC-BY-NC-4.0.txt": "https://raw.githubusercontent.com/tatsu-lab/stanford_alpaca/main/DATA_LICENSE"
+    }
+  },
+  "harmless_val": {
+    "url": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/dataset/splits/harmless_val.json",
+    "revision": "9d852fae1a9121c78b29142de733cb1340770cc3",
+    "sha256": "772010758e7d771ef4c7e5e4acdfd7598dcece1a6f383f20d382f640913a2a4d",
+    "count": 6264,
+    "licenses": {
+      "refusal_direction_APACHE-2.0.txt": "https://raw.githubusercontent.com/andyrdt/refusal_direction/9d852fae1a9121c78b29142de733cb1340770cc3/LICENSE",
+      "Alpaca_CC-BY-NC-4.0.txt": "https://raw.githubusercontent.com/tatsu-lab/stanford_alpaca/main/DATA_LICENSE"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+﻿models: [stub]
+tasks: data/tasks.jsonl
+task_ids: [burner, burner_safe]
+conditions: [text_chat, text_tools, vision, vision_tools]
+n_repeats: 1
+temperature: 0.0
+seed: 42
+max_new_tokens: 128
+image_source: real
+model_factory: src.stubs.model:create_model
+tools_factory: src.stubs.robot_tools:RobotTools
+action_tool_names: [move_object]
+include_drafts: false

@@ -22,7 +22,7 @@ def test_four_conditions(trial_data, image_path, condition, images, tools):
     assert "evaluator_metadata" not in serialize(messages)
     assert bool(treatment["tool_condition_addition"]) == tools
     assert bool(treatment["tool_catalog"]) == tools
-    assert (image_path in serialize(messages)) == images
+    assert [item["image"] for item in contents if item["type"] == "image"] == ([image_path] if images else [])
     assert messages[0]["content"][0]["text"] == trial.prompts.system_instruction + treatment["tool_condition_addition"]
 
 

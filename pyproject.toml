@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "robot-refusal"
 version = "0.1.0"
-description = "Single-trial local VLM experiments with symbolic robot command queues"
+description = "Paired VLM refusal evaluation and single-trial symbolic robot experiments"
 requires-python = ">=3.11,<3.14"
 dependencies = [
   "torch==2.7.1",
@@ -17,17 +17,28 @@ dependencies = [
   "accelerate==1.9.0",
   "safetensors==0.5.3",
   "numpy==2.2.6",
+  "PyYAML>=6",
 ]
 
 [project.optional-dependencies]
 test = ["pytest==8.4.2"]
+dev = ["pytest==8.4.2", "PyMuPDF==1.27.2.3"]
 
 [project.scripts]
 robot-refusal = "robot_refusal.cli:main"
 
+[tool.setuptools.package-dir]
+robot_refusal = "src/robot_refusal"
+
 [tool.setuptools.packages.find]
-where = ["src"]
+where = [".", "src"]
+include = ["src", "src.eval*", "src.stubs*", "src.models*", "data*", "robot_refusal*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+data = ["*.jsonl", "images/*.png", "images/*.md", "images/*.json", "chat_refusal/*.md", "chat_refusal/*.json"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "src/models/test_smoke_qwen.py"]
+pythonpath = [".", "src"]
 markers = ["real_model: opt-in checks requiring the pinned local Qwen checkpoint"]
