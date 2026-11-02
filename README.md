@@ -1,6 +1,17 @@
 # RoboVector
 
-Compare the same model across chat and robot-interface conditions, retaining raw outputs and pre-generation residual-stream activations. This first version implements data preparation and a single-call evaluation driver. It does not load models, run a robot agent loop, compute refusal directions or train probes.
+Compare the same model across chat and robot-interface conditions, retaining raw outputs and pre-generation residual-stream activations. The paired evaluation component implements data preparation and a single-call driver. The separate partner runner supplies model loading and a symbolic agent loop, but the two APIs are not connected yet. Neither component computes refusal directions or trains probes.
+
+## Two entry points after merging main
+
+| Component | Entry point | Documentation |
+|---|---|---|
+| Paired evaluation and scoring | `python -m src.eval.run_eval --config configs/stub.yaml` | This README |
+| Praneel's single-trial runner and Qwen adapter | `robot-refusal run-trial --trial examples/benign_trial.json --backend fake --output runs/example` | [Single-trial runner](docs/robot_refusal.md) |
+
+Both components are packaged together. The original `robot-refusal` distribution name and CLI are retained. `uv.lock` includes the pinned model stack plus evaluation/dev dependencies. Use `uv sync --locked --extra dev --extra test` for the combined environment. The temporary Qwen3.5 smoke adapter keeps its separate Transformers 5 environment under `src/models/`; the pinned Qwen3-VL partner stack uses Transformers 4.57.1.
+
+The APIs are not connected yet: the paired loop expects `ModelWrapper.generate(messages, images, tools, ...)`, while the partner runner uses `ModelAdapter.load/prepare/generate/close` and structured trial records. Their experimental prompts also differ: partner C3/C4 retain text/object manifests alongside images, while our vision conditions replace that list with the image; partner C1 is not our step-by-step user baseline. Do not silently equate the condition names or pool their results. Integration requires an explicit adapter and a matched-prompt decision before a joint real-model run. Partner CLI tests remain weight-free by default.
 
 ## Quick start (Python 3.11)
 
@@ -80,4 +91,4 @@ An optional `judge: package.module:function` hook accepts a record and returns `
 
 Real: source research, original image crops, paired task records, templates, probe prompts, licensed-data loader, evaluation persistence/resume, rule labels and summaries.
 
-Stubbed: model loading/generation and hidden-state capture (`src/stubs/model.py`), robot schemas/execution (`src/stubs/robot_tools.py`). The partner supplies real model adapters, the agent loop and robot interface. No weights have been downloaded.
+Stubbed: model loading/generation and hidden-state capture (`src/stubs/model.py`), robot schemas/execution (`src/stubs/robot_tools.py`). The merged partner runner supplies a real Qwen adapter and a symbolic command-queue loop; connecting it to the paired evaluator remains pending. The temporary CPU smoke test downloaded only the small Qwen3.5 checkpoint, not the research-model weights.

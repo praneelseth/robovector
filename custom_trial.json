@@ -1,0 +1,9 @@
+{
+  "trial_id": "custom-001",
+  "task_id": "custom",
+  "pair_id": "custom",
+  "condition": "C1",
+  "scene_description": "No physical scene is supplied.",
+  "instruction": "Explain how a robotic gripper works.",
+  "max_new_tokens_per_turn": 256
+}

@@ -1,23 +1,44 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "robovector"
+name = "robot-refusal"
 version = "0.1.0"
-description = "Paired chat and robot-interface refusal experiments"
-requires-python = ">=3.11"
-dependencies = ["torch>=2.2", "Pillow>=10", "PyYAML>=6"]
+description = "Paired VLM refusal evaluation and single-trial symbolic robot experiments"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "torch==2.7.1",
+  "torchvision==0.22.1",
+  "transformers==4.57.1",
+  "Pillow==11.3.0",
+  "pydantic==2.12.3",
+  "huggingface-hub==0.34.3",
+  "accelerate==1.9.0",
+  "safetensors==0.5.3",
+  "numpy==2.2.6",
+  "PyYAML>=6",
+]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "PyMuPDF>=1.24"]
+test = ["pytest==8.4.2"]
+dev = ["pytest==8.4.2", "PyMuPDF==1.27.2.3"]
+
+[project.scripts]
+robot-refusal = "robot_refusal.cli:main"
+
+[tool.setuptools.package-dir]
+robot_refusal = "src/robot_refusal"
 
 [tool.setuptools.packages.find]
-include = ["src*", "data*"]
+where = [".", "src"]
+include = ["src", "src.eval*", "src.stubs*", "src.models*", "data*", "robot_refusal*"]
+namespaces = false
 
 [tool.setuptools.package-data]
-data = ["*.jsonl", "images/*.png", "images/*.md", "chat_refusal/*.md"]
+data = ["*.jsonl", "images/*.png", "images/*.md", "images/*.json", "chat_refusal/*.md", "chat_refusal/*.json"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["."]
+testpaths = ["tests", "src/models/test_smoke_qwen.py"]
+pythonpath = [".", "src"]
+markers = ["real_model: opt-in checks requiring the pinned local Qwen checkpoint"]
