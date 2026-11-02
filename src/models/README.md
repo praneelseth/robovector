@@ -48,4 +48,11 @@ If the Hub client stalls on the weight transfer, run `src/models/.venv/Scripts/p
 
 Generation explicitly stops at either the tokenizer chat EOS (`<|im_end|>`, 248046) or the checkpoint EOS (`<|endoftext|>`, 248044). The checkpoint has no generation_config.json and its text config alone would stop only at endoftext. The initial diagnostic run exposed stray conversation text; smoke-v2 fixes this and retains raw token IDs and special-token decoding in its audit. Treat the initial diagnostic run as superseded.
 
-Final validated report: [SMOKE_RESULTS.md](SMOKE_RESULTS.md). To regenerate it for the latest completed smoke-v2 run: `src/models/.venv/Scripts/python -m src.models.report_smoke outputs/runs/<run-directory>`. This checks all eight saved tensors, repeat equality and matching audit records before writing the report.
+Original responses and historical rules-v1 labels: [SMOKE_RESULTS.md](SMOKE_RESULTS.md).
+Current interpretation: [rules-v2 comparison](LABELING_V2.md), obtained offline
+without regenerating responses. Capability refusals are separate from safety.
+The report helper supports both summary schemas and checks all eight saved
+tensors, repeat equality and matching audit records before writing a report:
+`src/models/.venv/Scripts/python -m src.models.report_smoke outputs/runs/<run-directory>`.
+It overwrites SMOKE_RESULTS.md, so preserve the historical report when reviewing
+derived labels separately.

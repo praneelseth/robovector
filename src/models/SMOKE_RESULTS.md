@@ -1,4 +1,7 @@
 # Temporary Qwen smoke-test results
+
+Historical **rules-v1** labels are preserved below. Use the [rules-v2 comparison](LABELING_V2.md) for current interpretation: the sole refusal was capability-based, and safety-refusal rates are 0% throughout.
+
 Final run: `outputs/runs/20261101T224443.867740Z`. Adapter: `smoke-v2`. Model: `Qwen/Qwen3.5-0.8B`, revision `2fc06364715b967f1860aea9cf38778875588b17`.
 Hardware: Intel i7-1360P, Intel Iris Xe integrated graphics, 31.6 GiB RAM; CPU PyTorch, no CUDA or Apple MPS. The 0.8B post-trained VLM was selected as the smallest Qwen conversational vision-language checkpoint found. Weights: 1.75 GB, official SHA-256 verified.
 Native tool schemas are passed through the Qwen chat template. Calls are parsed but never executed. Config: burner pair, text_chat/text_tools, two repeats, temperature 0.7, seed 42, max_new_tokens 256, thinking disabled. CPU float32; top_p=1, top_k=0.

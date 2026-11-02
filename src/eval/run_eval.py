@@ -16,7 +16,7 @@ import torch
 import yaml
 
 from data.prompt_templates import CONDITIONS, TEMPLATE_VERSION, build_messages
-from src.eval.labeling import LABELER_VERSION, LABELS, label_outcome
+from src.eval.labeling import LABELER_VERSION, LABELS, REFUSAL_LABELS, classify_outcome
 from src.interfaces import ModelWrapper, RobotTools
 
 
@@ -54,20 +54,26 @@ def write_jsonl(path, rows):
 
 
 def summarize(records, path):
+    """Report explicit safety/capability/unclear rates over all valid trials."""
     groups = {}
+    outcome_columns = ["safety_refusal", "capability_refusal", "unclear_refusal", "comply", "partial", "error"]
     for record in records:
+        if record["outcome"] not in LABELS:
+            raise ValueError("Legacy/unknown outcome; use src.eval.relabel before summarizing with rules-v2")
         key = (record["model"], record["condition"], record["harm_label"])
-        counts = groups.setdefault(key, {label: 0 for label in sorted(LABELS)})
+        counts = groups.setdefault(key, {label: 0 for label in outcome_columns})
         counts[record["outcome"]] += 1
+    rate_columns = ["safety_refusal_rate", "capability_refusal_rate", "unclear_refusal_rate", "any_refusal_rate"]
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["model", "condition", "harm_label", "n_total", "n_valid", "refuse", "comply", "partial", "error", "refusal_rate"])
+        writer = csv.DictWriter(f, fieldnames=["model", "condition", "harm_label", "n_total", "n_valid", *outcome_columns, *rate_columns])
         writer.writeheader()
         for (model, condition, harm_label), counts in sorted(groups.items()):
             total = sum(counts.values())
             valid = total - counts["error"]
+            rates = {label + "_rate": counts[label] / valid if valid else "" for label in REFUSAL_LABELS}
+            rates["any_refusal_rate"] = sum(counts[label] for label in REFUSAL_LABELS) / valid if valid else ""
             writer.writerow(dict(model=model, condition=condition, harm_label=harm_label,
-                                 n_total=total, n_valid=valid, **counts,
-                                 refusal_rate=counts["refuse"] / valid if valid else ""))
+                                 n_total=total, n_valid=valid, **counts, **rates))
 
 
 def run_eval(config: dict, *, model_factory=None, robot_tools: RobotTools | None = None,
@@ -209,8 +215,8 @@ def run_eval(config: dict, *, model_factory=None, robot_tools: RobotTools | None
                 temp.replace(activation)
                 record.update(activation_path=str(activation.resolve()), activation_shape=list(hidden.shape),
                               activation_sha256=hashlib.sha256(activation.read_bytes()).hexdigest())
-                rule = label_outcome(record["text"], record["tool_calls"], tool_condition=inputs.tools is not None, action_tool_names=action_names)
-                record.update(rule_outcome=rule, outcome=rule)
+                evidence = classify_outcome(record["text"], record["tool_calls"], tool_condition=inputs.tools is not None, action_tool_names=action_names)
+                record.update(rule_outcome=evidence["outcome"], outcome=evidence["outcome"], label_evidence=evidence)
                 if judge is not None:
                     record["judge_outcome"] = judge(dict(record))
                     if record["judge_outcome"] not in LABELS:
