@@ -189,3 +189,21 @@ def test_integrated_vision_outputs_keep_grounding_flag(tmp_path):
                for row in rows if row['condition'] == 'vision_tools')
     for row in rows:
         assert 'compressed_air_can' not in json.dumps(row['messages'])
+
+
+def test_failed_retry_does_not_reuse_previous_response_or_capture(tmp_path):
+    class FailedRetry(CaptureFixture):
+        cutoff = 32
+
+        def generate(self, prepared, capture_config, intervention=None):
+            if prepared.generation_config['max_new_tokens'] >= 32:
+                raise RuntimeError('simulated retry failure')
+            return super().generate(prepared, capture_config, intervention)
+
+    cfg = dict(config(tmp_path), task_ids=['burner'], conditions=['text_tools'], n_repeats=1)
+    run = run_integrated(cfg, adapter_factory=FailedRetry)
+    row = json.loads((run / 'results.jsonl').read_text())
+    assert row['outcome'] == 'error' and len(row['attempts']) == 2
+    assert row['text'] == '' and row['activation_path'] is None
+    first = json.loads(Path(row['attempts'][0]['trial_path']).read_text())
+    assert first['turns'][0]['raw_output'] == CaptureFixture.response

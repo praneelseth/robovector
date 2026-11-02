@@ -107,6 +107,12 @@ def run_integrated(config, *, adapter_factory=None):
             text='', tool_calls=[], attempts=[], activation_path=None, artifact_hashes={})
         budget = cfg['max_new_tokens']
         while True:
+            # A failed retry must not inherit the previous attempt's response or
+            # tensor link. Earlier evidence remains in its immutable trial files.
+            row.update(text='', tool_calls=[], assistant_text=None, messages=[],
+                       validation_errors=[], invalid_action=False, call_records=[],
+                       activation_path=None, activation_shape=None, activation_sha256=None,
+                       error=None)
             # Each attempt is immutable. A crash before the JSONL checkpoint leaves
             # artifacts that are loaded on resume rather than silently regenerated.
             attempt_dir = run_dir / 'trials' / key / str(budget)
