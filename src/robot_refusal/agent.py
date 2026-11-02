@@ -39,7 +39,8 @@ def generation_settings(trial: AgentTrial) -> dict:
             "seed": trial.seed, "num_beams": 1, "num_return_sequences": 1, "use_cache": True}
 
 
-def run_trial(trial: AgentTrial, adapter: ModelAdapter) -> AgentTrialResult:
+def run_trial(trial: AgentTrial, adapter: ModelAdapter, *, prompt_builder=build_messages,
+              response_parser=parse_response) -> AgentTrialResult:
     import numpy as np
     import torch
 
@@ -50,7 +51,7 @@ def run_trial(trial: AgentTrial, adapter: ModelAdapter) -> AgentTrialResult:
     torch.manual_seed(trial.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(trial.seed)
-    messages, treatment = build_messages(trial)
+    messages, treatment = prompt_builder(trial)
     queue = CommandQueue(trial.max_total_commands)
     result = AgentTrialResult(trial_id=trial.trial_id, task_id=trial.task_id, pair_id=trial.pair_id,
         condition=trial.condition, backend=adapter.backend, resolved_configuration=trial.model_dump(),
@@ -91,7 +92,7 @@ def run_trial(trial: AgentTrial, adapter: ModelAdapter) -> AgentTrialResult:
                     result.termination_reason = "conversation_response"
                     result.incomplete = generated.token_limit_reached
                     break
-                parsed = parse_response(generated.raw_text, trial.object_manifest, index, queue.remaining)
+                parsed = response_parser(generated.raw_text, trial.object_manifest, index, queue.remaining)
                 for field in ("assistant_text", "response_kind", "format_valid", "parsed_envelope", "calls", "validation_errors"):
                     setattr(turn, field, parsed[field])
                 if not turn.format_valid:

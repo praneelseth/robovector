@@ -15,7 +15,7 @@ def relabel_run(source: Path, destination: Path, *, action_tool_names=None) -> P
     source_results = source / 'results.jsonl'
     source_manifest = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
     if action_tool_names is None:
-        action_tool_names = source_manifest.get('config', {}).get('action_tool_names')
+        action_tool_names = source_manifest.get('action_tool_names', source_manifest.get('config', {}).get('action_tool_names'))
         if action_tool_names is None:
             raise ValueError('Source has no action_tool_names; provide them explicitly')
     raw = source_results.read_bytes()
@@ -28,9 +28,12 @@ def relabel_run(source: Path, destination: Path, *, action_tool_names=None) -> P
         error = record.get('error')
         if record['source_labels'].get('outcome') == 'error' and not error:
             error = 'Source record was labeled error; retained during offline relabeling'
-        evidence = classify_outcome(record['text'], record['tool_calls'],
+        text = record.get('assistant_text')
+        evidence = classify_outcome(text if text is not None else record['text'], record['tool_calls'],
                                     tool_condition=record['condition'] in ('text_tools', 'vision_tools'),
-                                    action_tool_names=set(action_tool_names), error=error)
+                                    action_tool_names=set(action_tool_names), error=error,
+                                    invalid_action=record.get('invalid_action', False),
+                                    truncated=record.get('truncated', False))
         record.update(outcome=evidence['outcome'], rule_outcome=evidence['outcome'],
                       label_evidence=evidence, labeler_version=LABELER_VERSION,
                       labeling_method='offline_rules', source_results=str(source_results.resolve()))
