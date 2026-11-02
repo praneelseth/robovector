@@ -56,20 +56,23 @@ def write_jsonl(path, rows):
 def summarize(records, path):
     """Report explicit safety/capability/unclear rates over all valid trials."""
     groups = {}
-    outcome_columns = ["safety_refusal", "capability_refusal", "unclear_refusal", "comply", "partial", "error"]
+    outcome_columns = ["safety_refusal", "capability_refusal", "unclear_refusal", "comply", "partial", "said_no_but_acted", "invalid_action", "error", "pending_truncated"]
     for record in records:
-        if record["outcome"] not in LABELS:
-            raise ValueError("Legacy/unknown outcome; use src.eval.relabel before summarizing with rules-v2")
+        if record.get('labeler_version', LABELER_VERSION) != LABELER_VERSION:
+            raise ValueError('Legacy labeler version; explicitly relabel before summarizing')
+        pending = record["outcome"] is None and record.get("truncated", False)
+        if record["outcome"] not in LABELS and not pending:
+            raise ValueError("Legacy/unknown outcome; explicitly relabel before summarizing")
         key = (record["model"], record["condition"], record["harm_label"])
         counts = groups.setdefault(key, {label: 0 for label in outcome_columns})
-        counts[record["outcome"]] += 1
+        counts["pending_truncated" if pending else record["outcome"]] += 1
     rate_columns = ["safety_refusal_rate", "capability_refusal_rate", "unclear_refusal_rate", "any_refusal_rate"]
     with path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=["model", "condition", "harm_label", "n_total", "n_valid", *outcome_columns, *rate_columns])
         writer.writeheader()
         for (model, condition, harm_label), counts in sorted(groups.items()):
             total = sum(counts.values())
-            valid = total - counts["error"]
+            valid = total - counts["error"] - counts["pending_truncated"]
             rates = {label + "_rate": counts[label] / valid if valid else "" for label in REFUSAL_LABELS}
             rates["any_refusal_rate"] = sum(counts[label] for label in REFUSAL_LABELS) / valid if valid else ""
             writer.writerow(dict(model=model, condition=condition, harm_label=harm_label,
@@ -86,6 +89,9 @@ def run_eval(config: dict, *, model_factory=None, robot_tools: RobotTools | None
     outputs too; use a new run to retry them. Missing/corrupt activations are repaired.
     """
     cfg = dict(config)
+    if cfg.get("engine") == "integrated":
+        from src.eval.integrated import run_integrated
+        return run_integrated(cfg)
     defaults = dict(models=["stub"], conditions=list(CONDITIONS), n_repeats=1,
                     temperature=0.0, seed=0, max_new_tokens=128, tasks="data/tasks.jsonl",
                     image_dir="data/images", image_source="real", output_dir="outputs",
@@ -94,6 +100,9 @@ def run_eval(config: dict, *, model_factory=None, robot_tools: RobotTools | None
                     action_tool_names=["move_object"])
     for key, value in defaults.items():
         cfg.setdefault(key, value)
+    if (model_factory is None and not cfg['model_factory'].startswith('src.stubs.')
+            and any(c.endswith('tools') for c in cfg['conditions'])):
+        raise ValueError('Real tool experiments must use engine: integrated and the shared JSON protocol')
     if cfg["n_repeats"] < 1 or cfg["max_new_tokens"] < 1 or cfg["temperature"] < 0:
         raise ValueError("Invalid generation settings")
     if not cfg["models"] or not cfg["conditions"] or not set(cfg["conditions"]) <= set(CONDITIONS):

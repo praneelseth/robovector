@@ -1,0 +1,18 @@
+# Requires a previously downloaded pinned Qwen3-VL snapshot on a GPU host.
+# Set model_config.model_dir to the snapshot returned by robot-refusal setup-model.
+engine: integrated
+tasks: data/tasks.jsonl
+task_ids: [burner, burner_safe]
+conditions: [text_chat, text_tools, vision, vision_tools]
+n_repeats: 2
+temperature: 0.7
+max_new_tokens: 256
+truncation_max_new_tokens: 2048
+seed: 42
+image_source: real
+model_config:
+  model_id: Qwen/Qwen3-VL-8B-Instruct
+  model_dir: null
+  device: cuda:0
+  dtype: bfloat16
+  attn_implementation: sdpa
