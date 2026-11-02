@@ -1,0 +1,124 @@
+{
+  "url": "https://arxiv.org/pdf/2610.14043v1",
+  "figure": 1,
+  "page": 2,
+  "pdf_sha256": "41b0897c70675a9c80b3ae3cd51f5297e11f228f0d12db9ea394639894cbe903",
+  "embedded_bitmap_size": [
+    2200,
+    736
+  ],
+  "coordinate_origin": "top-left",
+  "crop_convention": "left, top, right-exclusive, bottom-exclusive",
+  "images": [
+    {
+      "image_id": "doll_real",
+      "file": "doll_real.png",
+      "crop_box": [
+        77,
+        66,
+        494,
+        379
+      ],
+      "sha256": "28bda262f1c1b65d5112102f64d180c7851b2ee76aa1aff1c4eb48ebf729c850"
+    },
+    {
+      "image_id": "doll_sim",
+      "file": "doll_sim.png",
+      "crop_box": [
+        77,
+        411,
+        494,
+        724
+      ],
+      "sha256": "7c70431ec7f3f908be31f0a8506d2fd3220c58c68926e358effd054206a488bc"
+    },
+    {
+      "image_id": "burner_real",
+      "file": "burner_real.png",
+      "crop_box": [
+        502,
+        66,
+        919,
+        379
+      ],
+      "sha256": "b47fe2f1cb2720527909497fc92daa99ead7b932d8f932d6ee414900bdc853fd"
+    },
+    {
+      "image_id": "burner_sim",
+      "file": "burner_sim.png",
+      "crop_box": [
+        502,
+        411,
+        919,
+        724
+      ],
+      "sha256": "b7c78758bd4e752ebed53d74bb4085b43214cd32d4c5902e1fc7c243db99e32c"
+    },
+    {
+      "image_id": "toaster_real",
+      "file": "toaster_real.png",
+      "crop_box": [
+        928,
+        66,
+        1345,
+        379
+      ],
+      "sha256": "e44bb208c349af896fd075db0b5b794d354ac1df634cecf9720a9f6bedb62f2e"
+    },
+    {
+      "image_id": "toaster_sim",
+      "file": "toaster_sim.png",
+      "crop_box": [
+        928,
+        411,
+        1345,
+        724
+      ],
+      "sha256": "bdf05175b12cf0907ccbf6ae13b8a4c67390b3343fda769194994f6f2578329b"
+    },
+    {
+      "image_id": "brick_real",
+      "file": "brick_real.png",
+      "crop_box": [
+        1353,
+        66,
+        1770,
+        379
+      ],
+      "sha256": "ba182bc4eca049a88b4805cbb39ff8fc5ddff6b9e33f2d2660f32648c5ee7f17"
+    },
+    {
+      "image_id": "brick_sim",
+      "file": "brick_sim.png",
+      "crop_box": [
+        1353,
+        411,
+        1770,
+        724
+      ],
+      "sha256": "f8364047a6fcf329ef0aeef80f55ec7bab45a6fdea36b12d0cb15340e3029348"
+    },
+    {
+      "image_id": "pour_real",
+      "file": "pour_real.png",
+      "crop_box": [
+        1779,
+        66,
+        2196,
+        379
+      ],
+      "sha256": "1ef3e8287e88ad0ce879beae69e8d3b6407407073b6491918ee7e6b276836dd7"
+    },
+    {
+      "image_id": "pour_sim",
+      "file": "pour_sim.png",
+      "crop_box": [
+        1779,
+        411,
+        2196,
+        724
+      ],
+      "sha256": "ca81172baa6bd0861e3e63d0827d39ad81fff4cf018020082647ac98e532b2ed"
+    }
+  ]
+}

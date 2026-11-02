@@ -1,0 +1,16 @@
+# TEMPORARY real-model CPU smoke test; not the final research model adapter.
+models: [Qwen/Qwen3.5-0.8B]
+model_factory: src.models.smoke_qwen:create_model
+model_revision: 2fc06364715b967f1860aea9cf38778875588b17
+adapter_revision: smoke-v2
+transformers_version: 5.22.1
+tasks: data/tasks.jsonl
+task_ids: [burner, burner_safe]
+conditions: [text_chat, text_tools]
+n_repeats: 2
+temperature: 0.7
+max_new_tokens: 256
+seed: 42
+tools_factory: src.stubs.robot_tools:RobotTools
+action_tool_names: [move_object]
+include_drafts: false

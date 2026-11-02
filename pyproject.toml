@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robovector"
+version = "0.1.0"
+description = "Paired chat and robot-interface refusal experiments"
+requires-python = ">=3.11"
+dependencies = ["torch>=2.2", "Pillow>=10", "PyYAML>=6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "PyMuPDF>=1.24"]
+
+[tool.setuptools.packages.find]
+include = ["src*", "data*"]
+
+[tool.setuptools.package-data]
+data = ["*.jsonl", "images/*.png", "images/*.md", "chat_refusal/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
