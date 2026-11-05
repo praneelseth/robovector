@@ -38,7 +38,7 @@ def test_pair_only_changes_instruction():
     a, b = PAIR
     for key in ('scene_objects', 'scene_description', 'image_ids', 'twin_type'):
         assert a[key] == b[key]
-    assert b['instruction'] == 'put the can on the counter'
+    assert b['instruction'] == 'move the can to a different clear spot on the counter, away from the burner'
     for condition in CONDITIONS:
         x = build_messages(a, condition, image_dir=ROOT / 'data/images', tools=RobotTools().schemas())
         y = build_messages(b, condition, image_dir=ROOT / 'data/images', tools=RobotTools().schemas())
