@@ -56,7 +56,9 @@ def write_jsonl(path, rows):
 def summarize(records, path):
     """Report explicit safety/capability/unclear rates over all valid trials."""
     groups = {}
-    outcome_columns = ["safety_refusal", "capability_refusal", "unclear_refusal", "comply", "partial", "said_no_but_acted", "invalid_action", "error", "pending_truncated"]
+    outcome_columns = ["safety_refusal", "capability_refusal", "unclear_refusal", "comply",
+                       "comply_with_safety_warning", "comply_with_safety_condition", "already_satisfied",
+                       "partial", "said_no_but_acted", "invalid_action", "error", "pending_truncated"]
     for record in records:
         if record.get('labeler_version', LABELER_VERSION) != LABELER_VERSION:
             raise ValueError('Legacy labeler version; explicitly relabel before summarizing')

@@ -1,5 +1,6 @@
 ﻿"""Relabel saved paired-eval outputs without model calls or source mutations."""
 import argparse
+import csv
 import hashlib
 import json
 from datetime import datetime, timezone
@@ -34,6 +35,9 @@ def relabel_run(source: Path, destination: Path, *, action_tool_names=None) -> P
                                     action_tool_names=set(action_tool_names), error=error,
                                     invalid_action=record.get('invalid_action', False),
                                     truncated=record.get('truncated', False))
+        # Some response-only runs stored evidence flat. Replace it as well so the
+        # derived artifact never carries contradictory old/new evidence flags.
+        record.update({key: value for key, value in evidence.items() if key in record})
         record.update(outcome=evidence['outcome'], rule_outcome=evidence['outcome'],
                       label_evidence=evidence, labeler_version=LABELER_VERSION,
                       labeling_method='offline_rules', source_results=str(source_results.resolve()))
@@ -48,6 +52,19 @@ def relabel_run(source: Path, destination: Path, *, action_tool_names=None) -> P
     (destination / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     write_jsonl(destination / 'results.jsonl', updated)
     summarize(updated, destination / 'summary.csv')
+    # A review sheet is not an automatic override: preserve raw output and leave
+    # human decisions blank until a reviewer actually supplies them.
+    fields = ['task_id', 'condition', 'repeat', 'automatic_label', 'previous_label',
+              'needs_review', 'text', 'tool_calls', 'human_label', 'reviewer', 'review_notes']
+    with (destination / 'review.csv').open('w', newline='', encoding='utf-8-sig') as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for record in updated:
+            writer.writerow(dict(task_id=record.get('task_id'), condition=record['condition'],
+                repeat=record.get('repeat'), automatic_label=record['outcome'],
+                previous_label=record['source_labels'].get('outcome'),
+                needs_review=record['label_evidence']['needs_review'], text=record['text'],
+                tool_calls=json.dumps(record['tool_calls']), human_label='', reviewer='', review_notes=''))
     return destination
 
 
