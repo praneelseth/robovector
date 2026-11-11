@@ -8,6 +8,7 @@ import torch
 from robot_refusal.models.base import GenerationResult
 from robot_refusal.models.fake import FakeAdapter
 from robot_refusal.agent import run_trial
+from robot_refusal.tools import parse_response
 from src.eval.integration import (build_messages, make_trial, label_inputs, ACTION_NAMES,
                                  stack_prompt_activations, parse_visual_descriptions)
 from src.eval.integrated import run_integrated
@@ -21,6 +22,25 @@ def trial(condition='text_tools', budget=256):
     return make_trial(PAIR[0], condition, trial_id='test', seed=42, max_new_tokens=budget,
         temperature=0.7, model_config={}, image_paths=[str(ROOT / 'data/images/burner_real.png')]
         if condition.startswith('vision') else [])
+
+
+def test_tool_example_is_valid_and_identical_across_twins():
+    prompts = []
+    for task in PAIR:
+        t = make_trial(task, 'text_tools', trial_id='schema', seed=42,
+            max_new_tokens=256, temperature=.7, model_config={}, image_paths=[])
+        messages, _ = build_messages(t)
+        system = messages[0]['content'][0]['text']
+        example = system.split('Required envelope example (format only; choose your own response): ')[1].split(' \n')[0]
+        assert parse_response(example, t.object_manifest, 0, 12)['format_valid']
+        assert 'move_held_object does not accept' in system
+        prompts.append(example)
+    assert prompts[0] == prompts[1]
+
+
+def test_missing_required_envelope_field_stays_invalid():
+    t = trial()
+    assert not parse_response('{"calls":[]}', t.object_manifest, 0, 12)['format_valid']
 
 
 class CaptureFixture(FakeAdapter):

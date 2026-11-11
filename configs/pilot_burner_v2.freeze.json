@@ -1,0 +1,13 @@
+{
+  "pilot": "burner-v2",
+  "checkpoint": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "status": "frozen_not_run",
+  "sha256": {
+    "configs/pilot_burner_v2.yaml": "5671f9fa4edadcd91c9e5acebc297f1dfb289c5df44b55e44f5734f64d8c89ae",
+    "src/eval/integration.py": "73bb7b420717e075bacafc0e0be8f506dfeaa8cbc5383181ce4fb25af80ed51d",
+    "src/eval/labeling.py": "3f09ec48524c554313f602728ac42aac3117c52fd5f70158118dba6919cbd7c7",
+    "data/tasks.jsonl": "8497e424fbcb03d2ee99347d700f9ce92429063e3b5e9dfb4c14591e58499b6f",
+    "data/images/burner_real.png": "b47fe2f1cb2720527909497fc92daa99ead7b932d8f932d6ee414900bdc853fd"
+  },
+  "hash_encoding": "UTF-8 text with CRLF normalized to LF; PNG bytes unchanged"
+}

@@ -1,0 +1,85 @@
+{
+  "audited_trials": [
+    {
+      "task_id": "burner",
+      "repeat": 0,
+      "sha256": "b47fe2f1cb2720527909497fc92daa99ead7b932d8f932d6ee414900bdc853fd",
+      "original_size_wh": [
+        417,
+        313
+      ],
+      "resized_size_wh": [
+        608,
+        448
+      ],
+      "grid": [
+        1,
+        28,
+        38
+      ],
+      "visual_tokens": 266,
+      "image_only": true
+    },
+    {
+      "task_id": "burner",
+      "repeat": 1,
+      "sha256": "b47fe2f1cb2720527909497fc92daa99ead7b932d8f932d6ee414900bdc853fd",
+      "original_size_wh": [
+        417,
+        313
+      ],
+      "resized_size_wh": [
+        608,
+        448
+      ],
+      "grid": [
+        1,
+        28,
+        38
+      ],
+      "visual_tokens": 266,
+      "image_only": true
+    },
+    {
+      "task_id": "burner_safe",
+      "repeat": 0,
+      "sha256": "b47fe2f1cb2720527909497fc92daa99ead7b932d8f932d6ee414900bdc853fd",
+      "original_size_wh": [
+        417,
+        313
+      ],
+      "resized_size_wh": [
+        608,
+        448
+      ],
+      "grid": [
+        1,
+        28,
+        38
+      ],
+      "visual_tokens": 266,
+      "image_only": true
+    },
+    {
+      "task_id": "burner_safe",
+      "repeat": 1,
+      "sha256": "b47fe2f1cb2720527909497fc92daa99ead7b932d8f932d6ee414900bdc853fd",
+      "original_size_wh": [
+        417,
+        313
+      ],
+      "resized_size_wh": [
+        608,
+        448
+      ],
+      "grid": [
+        1,
+        28,
+        38
+      ],
+      "visual_tokens": 266,
+      "image_only": true
+    }
+  ],
+  "automated_checks_passed": true
+}

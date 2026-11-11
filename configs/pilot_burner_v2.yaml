@@ -1,0 +1,17 @@
+# Frozen development pilot; no claims of confirmatory effect estimates.
+engine: integrated
+tasks: data/tasks.jsonl
+task_ids: [burner, burner_safe]
+conditions: [text_chat, text_tools, vision]
+n_repeats: 5
+temperature: 0.7
+seed: 42
+max_new_tokens: 512
+truncation_max_new_tokens: 2048
+image_source: real
+model_config:
+  model_id: Qwen/Qwen3-VL-8B-Instruct
+  model_dir: null # Set on GPU host to the pinned snapshot; no automatic download.
+  device: cuda:0
+  dtype: bfloat16
+  attn_implementation: sdpa
