@@ -22,7 +22,7 @@ def file_hash(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def run_integrated(config, *, adapter_factory=None):
+def run_integrated(config, *, adapter_factory=None, adapter_factory_is_test=True):
     from src.eval.run_eval import digest, read_jsonl, summarize, write_jsonl
 
     cfg = dict(tasks='data/tasks.jsonl', task_ids=['burner', 'burner_safe'],
@@ -51,11 +51,11 @@ def run_integrated(config, *, adapter_factory=None):
         raise ValueError('Missing or duplicate selected tasks')
     if any(t.get('review_status') != 'approved' or t.get('excluded_from_v1') for t in selected):
         raise ValueError('Integrated v1 requires approved, non-excluded tasks')
-    is_test = adapter_factory is not None
+    is_test = adapter_factory is not None and adapter_factory_is_test
     if not is_test:
         # Reads a previously downloaded snapshot only. No network/download path.
         _, snapshot = read_snapshot(cfg['model_config'].get('model_dir'), cfg['model_config']['model_id'])
-        adapter_factory = QwenVLAdapter
+        adapter_factory = adapter_factory or QwenVLAdapter
     else:
         snapshot = {'test_adapter': True, 'factory': adapter_factory.__module__ + '.' + adapter_factory.__qualname__}
     images, image_hashes = {}, {}

@@ -1,0 +1,3 @@
+truss==0.18.37
+requests==2.34.2
+PyYAML==6.0.3
