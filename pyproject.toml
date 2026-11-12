@@ -22,6 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest==8.4.2"]
+analysis = ["matplotlib==3.10.6"]
 dev = ["pytest==8.4.2", "PyMuPDF==1.27.2.3"]
 
 [project.scripts]
@@ -32,7 +33,7 @@ robot_refusal = "src/robot_refusal"
 
 [tool.setuptools.packages.find]
 where = [".", "src"]
-include = ["src", "src.eval*", "src.stubs*", "src.models*", "data*", "robot_refusal*"]
+include = ["src", "src.eval*", "src.analysis*", "src.stubs*", "src.models*", "data*", "robot_refusal*"]
 namespaces = false
 
 [tool.setuptools.package-data]
