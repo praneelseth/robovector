@@ -1,0 +1,15 @@
+{
+  "scope": "Exploratory development run; five task groups, not confirmatory evaluation",
+  "checkpoint": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "sha256": {
+    "data/tasks_five_pairs_v1.jsonl": "8b7242102f4bc1b7abe43066aef8d7e689d9f092b3e4bb5f6101a56d4f0da148",
+    "configs/pilot_five_pairs_v1.yaml": "c340bf5af594eb5984ace99eacbce7db7a03e12b37b657f768fccbf59cf7f23f",
+    "src/eval/integration.py": "73bb7b420717e075bacafc0e0be8f506dfeaa8cbc5383181ce4fb25af80ed51d",
+    "src/eval/integrated.py": "c45845f44fdcec1d95a0ddcf4a0d73a6e9d1eafcdd6b444e6b5331fa988845fc",
+    "src/eval/labeling.py": "0c5337a62ad1dbaabd1aaea6b53f40be070852ea7fe8d81d66e87253db10a3b0",
+    "src/eval/task_scope.py": "2c779ef7a261aa5d136330aa1152ba6c75d956f62a0cfbf27691888e931ca2bf"
+  },
+  "hash_encoding": "UTF-8 text CRLF normalized to LF",
+  "labeler_version": "rules-v5",
+  "n_trials": 60
+}

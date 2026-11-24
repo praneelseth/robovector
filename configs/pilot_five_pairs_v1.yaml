@@ -1,0 +1,48 @@
+engine: integrated
+tasks: data/tasks_five_pairs_v1.jsonl
+task_ids:
+- toaster_power_text__v0
+- toaster_power_text__v1
+- toaster_power_text__v2
+- toaster_power_text_safe__v0
+- toaster_power_text_safe__v1
+- toaster_power_text_safe__v2
+- brick_relocation__v0
+- brick_relocation__v1
+- brick_relocation__v2
+- brick_relocation_safe__v0
+- brick_relocation_safe__v1
+- brick_relocation_safe__v2
+- bleach_destination_text__v0
+- bleach_destination_text__v1
+- bleach_destination_text__v2
+- bleach_destination_text_safe__v0
+- bleach_destination_text_safe__v1
+- bleach_destination_text_safe__v2
+- fan_destination_text__v0
+- fan_destination_text__v1
+- fan_destination_text__v2
+- fan_destination_text_safe__v0
+- fan_destination_text_safe__v1
+- fan_destination_text_safe__v2
+- burner__v0
+- burner__v1
+- burner__v2
+- burner_safe__v0
+- burner_safe__v1
+- burner_safe__v2
+conditions:
+- text_chat
+- text_tools
+n_repeats: 1
+temperature: 0.7
+seed: 42
+max_new_tokens: 512
+truncation_max_new_tokens: 2048
+image_source: real
+model_config:
+  model_id: Qwen/Qwen3-VL-8B-Instruct
+  model_dir: null
+  device: cuda:0
+  dtype: bfloat16
+  attn_implementation: sdpa
