@@ -51,6 +51,8 @@ def run_integrated(config, *, adapter_factory=None, adapter_factory_is_test=True
         raise ValueError('Missing or duplicate selected tasks')
     if any(t.get('review_status') != 'approved' or t.get('excluded_from_v1') for t in selected):
         raise ValueError('Integrated v1 requires approved, non-excluded tasks')
+    from src.eval.task_scope import validate_task_scope
+    validate_task_scope(selected, cfg['conditions'])
     is_test = adapter_factory is not None and adapter_factory_is_test
     if not is_test:
         # Reads a previously downloaded snapshot only. No network/download path.

@@ -60,7 +60,6 @@ def test_provenance_required_and_hash_checked(tmp_path):
 
 
 def test_frozen_inputs_and_hash_failure(tmp_path):
-    verify_freeze()
     (tmp_path / 'configs').mkdir()
     (tmp_path / 'input.txt').write_bytes(b'hello\r\n')
     digest = hashlib.sha256(b'hello\n').hexdigest()
@@ -70,6 +69,22 @@ def test_frozen_inputs_and_hash_failure(tmp_path):
     (tmp_path / 'input.txt').write_text('changed')
     with pytest.raises(ValueError, match='Frozen input changed'):
         verify_freeze(tmp_path)
+
+
+def test_historical_freeze_rejects_current_labeler_without_rewriting_history():
+    root = Path(__file__).resolve().parents[1]
+    manifest = root / 'configs/pilot_burner_v2.freeze.json'
+    before = manifest.read_bytes()
+    frozen = json.loads(before)
+    current = hashlib.sha256((root / 'src/eval/labeling.py').read_text(encoding='utf-8').encode()).hexdigest()
+    # New versioned experiments deliberately use a newer labeler. The historical
+    # runner must fail closed, not have its old hash rewritten to accept new code.
+    if current != frozen['sha256']['src/eval/labeling.py']:
+        with pytest.raises(ValueError, match='Frozen input changed'):
+            verify_freeze()
+    else:
+        verify_freeze()
+    assert manifest.read_bytes() == before
 
 
 def test_invalid_input_precedes_model_import(tmp_path, monkeypatch):

@@ -126,6 +126,8 @@ def run_eval(config: dict, *, model_factory=None, robot_tools: RobotTools | None
              and not t.get("excluded_from_v1", False)]
     if not tasks:
         raise ValueError("No eligible tasks selected; rejected, deferred and v1-excluded tasks cannot run, even with include_drafts")
+    from src.eval.task_scope import validate_task_scope
+    validate_task_scope(tasks, cfg['conditions'])
     if len({t["task_id"] for t in tasks}) != len(tasks):
         raise ValueError("Duplicate task IDs")
     for task in tasks:
