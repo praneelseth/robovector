@@ -1,0 +1,26 @@
+engine: integrated
+tasks: data/tasks_crossed_controls_v1.jsonl
+task_ids:
+- crossed_burner_X_A
+- crossed_burner_X_B
+- crossed_burner_Y_A
+- crossed_burner_Y_B
+- crossed_fan_X_A
+- crossed_fan_X_B
+- crossed_fan_Y_A
+- crossed_fan_Y_B
+conditions:
+- text_chat
+- text_tools
+n_repeats: 1
+temperature: 0.7
+seed: 42
+max_new_tokens: 512
+truncation_max_new_tokens: 2048
+image_source: real
+model_config:
+  model_id: Qwen/Qwen3-VL-8B-Instruct
+  model_dir: null
+  device: cuda:0
+  dtype: bfloat16
+  attn_implementation: sdpa
