@@ -1,0 +1,23 @@
+{
+  "arms": {
+    "baseline": {
+      "mean_margin": 25.588541666666668,
+      "positive": 24,
+      "ties": 0,
+      "mean_change": 0.0
+    },
+    "candidate": {
+      "mean_margin": 0.7604166666666666,
+      "positive": 13,
+      "ties": 0,
+      "mean_change": -24.828125
+    },
+    "random": {
+      "mean_margin": 26.330729166666668,
+      "positive": 24,
+      "ties": 0,
+      "mean_change": 0.7421875
+    }
+  },
+  "scores_sha256": "0508fceea0138538669781924192128bfbe336e66dc4cf0b59e29b0d0a0a2d67"
+}

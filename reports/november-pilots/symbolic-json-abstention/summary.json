@@ -1,0 +1,21 @@
+{
+  "arms": {
+    "baseline": {
+      "blocked_placement": 2,
+      "blocked_empty_with_reason": 3,
+      "allowed_placement": 5,
+      "allowed_empty_with_reason": 0,
+      "invalid": 0,
+      "truncated": 0
+    },
+    "explicit_abstention": {
+      "blocked_placement": 0,
+      "blocked_empty_with_reason": 5,
+      "allowed_placement": 3,
+      "allowed_empty_with_reason": 2,
+      "invalid": 0,
+      "truncated": 0
+    }
+  },
+  "score_sha256": "0b89053ffb29204002318297ce0227c71b888e86295e9ec863340a148b0ac1e2"
+}
